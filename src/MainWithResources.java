@@ -97,7 +97,6 @@ public class MainWithResources {
                                         .replace(SUBSTRING_TO_BE_REPLACED_WITH_VALUE_POSTFIX_INDEX, String.valueOf(i))))
                         .collect(Collectors.joining());
             }
-            
             final String outdatedString = intermediateString;
             intermediateString = MessageFormat.format(intermediateString, CHRONOMETRICAL_UNITS_VALUES_POSTFIXES);
             
