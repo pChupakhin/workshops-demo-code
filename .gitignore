@@ -20,3 +20,8 @@ traget/
 *.nar
 animals*.*
 hs_err_pid*
+##############################
+.idea/misc.xml
+modules.xml
+vcs.xml
+workspace.xml
