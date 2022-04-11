@@ -76,7 +76,6 @@ public class MainWithResources {
                 .toArray(ChoiceFormat[]::new);
         
         formatter.setFormats(formatsForEachNumberBetweenCurlyBracketsInStartString);
-        
         String intermediateString = formatter.format(elapsedTimelineChronometricalUnitsValues).stripTrailing();
         
         System.out.printf("\n" + FIRST_INTERMEDIATE_RESULT + "\n", startString, intermediateString);
