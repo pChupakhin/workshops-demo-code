@@ -40,8 +40,7 @@ public class Main {
                 "{" + INDEX + ",number,#} " + "'{'" + INDEX + "'}'s"    // limits[2] = 2; if {i} >= 2 then parts[2]
         };
         
-        final ChoiceFormat[] formatsForEachNumberBetweenCurlyBracketsInStartString
-                = IntStream .iterate(0, i -> i + 1)
+        final ChoiceFormat[] formatsForEachNumberBetweenCurlyBracketsInStartString = IntStream .iterate(0, i -> i + 1)
                 .limit(CHRONOMETRICAL_UNITS.length)
                 .mapToObj(i -> Stream.of(parts)
                         .map(part -> part
