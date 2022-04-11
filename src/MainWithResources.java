@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-// In Run/Debug Configurations -> VM options type "-Duser.language=ua(for ukrainian)/ru(for russian)."
+// In Run/Debug Configurations -> VM options type "-Duser.language=ua(for ukrainian)/ru(for russian)".
 public class MainWithResources {
     
     // Time units
