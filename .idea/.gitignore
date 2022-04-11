@@ -1,0 +1,22 @@
+##############################
+## IntelliJ
+##############################
+out/
+traget/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
+
+##############################
+## Java
+##############################
+.mtj.tmp/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+animals*.*
+hs_err_pid*
