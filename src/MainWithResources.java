@@ -81,10 +81,8 @@ public class MainWithResources {
         System.out.printf("\n" + FIRST_INTERMEDIATE_RESULT + "\n", startString, intermediateString);
         
         if(REQUIRES_POSTFIXES_FOR_CHRONOMETRICAL_UNITS_VALUES) {
-            
             {
                 final String outdatedString = intermediateString;
-                
                 intermediateString = IntStream.iterate(0, i -> i + 1)
                         .limit(CHRONOMETRICAL_UNITS_VALUES_POSTFIXES.length)
                         .boxed()
