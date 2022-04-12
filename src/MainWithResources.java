@@ -19,6 +19,7 @@ public class MainWithResources {
     private static final String SUBSTRING_TO_BE_REPLACED_WITH_CHRONOMETRICAL_UNIT_INDEX;
     private static final boolean REQUIRES_POSTFIXES_FOR_CHRONOMETRICAL_UNITS_VALUES;
     private static final String SUBSTRING_TO_BE_REPLACED_WITH_VALUE_POSTFIX_INDEX;
+    private static final String REGEXP_FOR_INTERMEDIATE_RESULT_STRING_SPLITTING;
     private static final int[] INDICES_OF_CHRONOMETRICAL_UNITS_VALUES_WITH_SWITCHED_POSTFIX;
     private static final Object[] CHRONOMETRICAL_UNITS_VALUES_POSTFIXES;
     
@@ -40,12 +41,13 @@ public class MainWithResources {
         
         STRING_TYPE_PATTERN_AS_CHOICE_FORMAT_CONSTRUCTOR_PARAMETER = localBundle.getString("pattern")
                 .replaceFirst(Boolean.parseBoolean(localBundle.getString("requiresPostfixForChronometricalUnitsNames"))
-                        ? globalBundle.getString("substringToBeReplacedWithNamePostfix") : "^$",
+                                ? globalBundle.getString("substringToBeReplacedWithNamePostfix") : "^$",
                         localBundle.getString("ChronometricalUnitsNamesPostfix"));
         SUBSTRING_TO_BE_REPLACED_WITH_CHRONOMETRICAL_UNIT_INDEX = globalBundle.getString("substringToBeReplacedWithChronometricalUnitIndex");
         REQUIRES_POSTFIXES_FOR_CHRONOMETRICAL_UNITS_VALUES
                 = Boolean.parseBoolean(localBundle.getString("requiresPostfixesForChronometricalUnitsValues"));
         SUBSTRING_TO_BE_REPLACED_WITH_VALUE_POSTFIX_INDEX = globalBundle.getString("substringToBeReplacedWithValuePostfixIndex");
+        REGEXP_FOR_INTERMEDIATE_RESULT_STRING_SPLITTING = globalBundle.getString("regexpForIntermediateResultStringSplitting");
         INDICES_OF_CHRONOMETRICAL_UNITS_VALUES_WITH_SWITCHED_POSTFIX = Stream
                 .of(localBundle.getString("indicesOfChronometricalUnitsValuesWithSwitchedPostfix").split("\\f"))
                 .mapToInt(Integer::valueOf)
@@ -86,23 +88,19 @@ public class MainWithResources {
                 intermediateString = IntStream.iterate(0, i -> i + 1)
                         .limit(CHRONOMETRICAL_UNITS_VALUES_POSTFIXES.length)
                         .boxed()
-                        .flatMap(i -> Stream.of(outdatedString.split(
-                                        "(?<=\\{" + SUBSTRING_TO_BE_REPLACED_WITH_VALUE_POSTFIX_INDEX + "})\\B"))
-                                .skip(i == 0 ? 0 : INDICES_OF_CHRONOMETRICAL_UNITS_VALUES_WITH_SWITCHED_POSTFIX[i - 1])
-                                .limit(i == CHRONOMETRICAL_UNITS_VALUES_POSTFIXES.length - 1 ?
-                                        elapsedTimelineChronometricalUnitsValues.length + 1
-                                                - INDICES_OF_CHRONOMETRICAL_UNITS_VALUES_WITH_SWITCHED_POSTFIX[i - 1]
-                                        : INDICES_OF_CHRONOMETRICAL_UNITS_VALUES_WITH_SWITCHED_POSTFIX[i])
+                        .flatMap(i -> Stream.of(outdatedString.split(REGEXP_FOR_INTERMEDIATE_RESULT_STRING_SPLITTING))
+                                .skip(INDICES_OF_CHRONOMETRICAL_UNITS_VALUES_WITH_SWITCHED_POSTFIX[i])
+                                .limit(INDICES_OF_CHRONOMETRICAL_UNITS_VALUES_WITH_SWITCHED_POSTFIX[i + 1])
                                 .map(patternSubstring -> patternSubstring
                                         .replace(SUBSTRING_TO_BE_REPLACED_WITH_VALUE_POSTFIX_INDEX, String.valueOf(i))))
                         .collect(Collectors.joining());
             }
+            
             final String outdatedString = intermediateString;
             intermediateString = MessageFormat.format(intermediateString, CHRONOMETRICAL_UNITS_VALUES_POSTFIXES);
             
             System.out.printf(SECOND_INTERMEDIATE_RESULT + "\n", intermediateString, outdatedString);
         }
-        
         final String finalString = MessageFormat.format(intermediateString, LOCALIZED_CHRONOMETRICAL_UNITS_NAMES);
         final String from = DateTimeProvider.getFrom().format(DateTimeFormatter.ofPattern("kk:mm:ss dd.MM.y"));
         final String to = DateTimeProvider.getTo().format(DateTimeFormatter.ofPattern("kk:mm:ss dd.MM.y"));
